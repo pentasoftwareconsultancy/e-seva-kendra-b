@@ -78,4 +78,14 @@ public class PaymentService {
     public List<Payment> getAllPayments(){
         return paymentRepository.findAll();
     }
+    public Double getTodayEarnings(){
+
+        Double total = paymentRepository.getTodayEarnings();
+
+        if(total == null){
+            return 0.0;
+        }
+
+        return total;
+    }
 }
