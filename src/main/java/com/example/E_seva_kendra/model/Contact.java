@@ -3,13 +3,8 @@ package com.example.E_seva_kendra.model;
 import jakarta.persistence.*;
 
 @Entity
-<<<<<<< HEAD:src/main/java/com/example/E_seva_kendra/model/User.java
-@Table(name = "users")
-public class User {
-=======
 @Table(name = "contact")
 public class Contact {
->>>>>>> 56b21aa883656ec109512d60a15afc7acbb006aa:src/main/java/com/example/E_seva_kendra/model/Contact.java
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,20 +12,12 @@ public class Contact {
 
     private String name;
     private String email;
-<<<<<<< HEAD:src/main/java/com/example/E_seva_kendra/model/User.java
-    private String phone;
-    private String password;
-
-    public User() {
-    }
-=======
     private String service;
     private String mobile;
     private String message;
     private String status;
 
     public Contact() {}
->>>>>>> 56b21aa883656ec109512d60a15afc7acbb006aa:src/main/java/com/example/E_seva_kendra/model/Contact.java
 
     public Long getId() {
         return id;
@@ -52,22 +39,6 @@ public class Contact {
         this.email = email;
     }
 
-<<<<<<< HEAD:src/main/java/com/example/E_seva_kendra/model/User.java
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-=======
     public String getService() {
         return service;
     }
@@ -98,6 +69,5 @@ public class Contact {
 
     public void setStatus(String status) {
         this.status = status;
->>>>>>> 56b21aa883656ec109512d60a15afc7acbb006aa:src/main/java/com/example/E_seva_kendra/model/Contact.java
     }
 }
