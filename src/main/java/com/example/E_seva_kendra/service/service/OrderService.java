@@ -46,4 +46,20 @@ public class OrderService {
 
         return "Order status updated successfully";
     }
+    
+    public long getTotalOrders(){
+        return orderRepository.count();
+    }
+
+    public long getPendingOrders(){
+        return orderRepository.countByStatus("Pending");
+    }
+
+    public long getInProgressOrders(){
+        return orderRepository.countByStatus("In Progress");
+    }
+
+    public long getCompletedOrders(){
+        return orderRepository.countByStatus("Completed");
+    }
 }

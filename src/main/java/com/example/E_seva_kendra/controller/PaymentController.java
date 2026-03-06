@@ -35,4 +35,8 @@ public class PaymentController {
     public List<Payment> getAllPayments(){
         return paymentService.getAllPayments();
     }
+    @GetMapping("/today-earnings")
+    public Double getTodayEarnings(){
+        return paymentService.getTodayEarnings();
+    }
 }
