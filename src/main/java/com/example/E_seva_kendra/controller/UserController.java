@@ -38,6 +38,33 @@ public class UserController {
         return "User Registered Successfully";
     }
 
+    // UPDATE PROFILE BY EMAIL
+    @PutMapping("/update-by-email")
+    public String updateProfileByEmail(@RequestBody UserUpdateRequest request) {
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+
+        if(optionalUser.isEmpty()) {
+            return "User not found with this email";
+        }
+
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            return "Current password is incorrect";
+        }
+
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            user.setName(request.getName());
+        }
+
+        if (request.getNewPassword() != null && !request.getNewPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        }
+
+        userRepository.save(user);
+        return "Profile Updated Successfully";
+    }
+
     // LOGIN API
     @PostMapping("/login")
     public String login(@RequestBody User user){
@@ -56,4 +83,24 @@ public class UserController {
         return "Invalid Email or Password";
     }
 
+    // DTO class
+    public static class UserUpdateRequest {
+        private String name;
+        private String email;
+        private String currentPassword;
+        private String newPassword;
+
+        // getters & setters
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+
+        public String getCurrentPassword() { return currentPassword; }
+        public void setCurrentPassword(String currentPassword) { this.currentPassword = currentPassword; }
+
+        public String getNewPassword() { return newPassword; }
+        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+    }
 }
