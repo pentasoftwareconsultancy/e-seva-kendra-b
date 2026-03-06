@@ -9,38 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import com.example.E_seva_kendra.model.User;
 import com.example.E_seva_kendra.repository.UserRepository;
 
-@CrossOrigin(origins = "*")
-@RestController
-@RequestMapping("/api/contact")
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin("*")
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
 
-    // Save contact message
-    @PostMapping
-    public User saveContact(@RequestBody User user) {
-        return userRepository.save(user);
-    }
-
-    // Get all contacts
-    @GetMapping
-    public List<User> getAllContacts() {
-        return userRepository.findAll();
-    }
-
-    // Get only unread messages
-    @GetMapping("/unread")
-    public List<User> getUnreadMessages() {
-        return userRepository.findByStatus("Unread");
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // REGISTER API
+    // ================= REGISTER =================
     @PostMapping("/register")
     public String register(@RequestBody User user) {
 
@@ -58,9 +39,28 @@ public class UserController {
         return "User Registered Successfully";
     }
 
-    // UPDATE PROFILE BY EMAIL
+    // ================= LOGIN =================
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+        if(existingUser.isPresent()){
+
+            User dbUser = existingUser.get();
+
+            if(passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
+                return "Login Successful";
+            }
+        }
+
+        return "Invalid Email or Password";
+    }
+
+    // ================= UPDATE PROFILE =================
     @PutMapping("/update-by-email")
     public String updateProfileByEmail(@RequestBody UserUpdateRequest request) {
+
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
 
         if(optionalUser.isEmpty()) {
@@ -82,70 +82,101 @@ public class UserController {
         }
 
         userRepository.save(user);
+
         return "Profile Updated Successfully";
     }
 
-    // LOGIN API
-    @PostMapping("/login")
-    public String login(@RequestBody User user){
+    // ================= GET ALL USERS (ADMIN) =================
+    @GetMapping("/all")
+    public List<UserDTO> getAllUsers() {
 
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        List<User> users = userRepository.findAll();
 
-        if(existingUser.isPresent()){
-
-            User dbUser = existingUser.get();
-
-            if(passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
-                return "Login Successful";
-            }
-        }
-
-        return "Invalid Email or Password";
+        return users.stream().map(user -> new UserDTO(
+            user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getPhone(),
+            "User"
+        )).toList();
     }
 
-    // DTO class
+    // ================= DTO FOR UPDATE =================
     public static class UserUpdateRequest {
+
         private String name;
         private String email;
         private String currentPassword;
         private String newPassword;
 
-        // getters & setters
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-
-        public String getCurrentPassword() { return currentPassword; }
-        public void setCurrentPassword(String currentPassword) { this.currentPassword = currentPassword; }
-
-        public String getNewPassword() { return newPassword; }
-        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
-    }
-
-    
-    // Mark message as read
-    @PutMapping("/{id}/read")
-    public User markAsRead(@PathVariable Long id) {
-
-        User user = userRepository.findById(id).orElse(null);
-
-        if (user != null) {
-            user.setStatus("Read");
-            return userRepository.save(user);
+        public String getName() {
+            return name;
         }
 
-        return null;
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getCurrentPassword() {
+            return currentPassword;
+        }
+
+        public void setCurrentPassword(String currentPassword) {
+            this.currentPassword = currentPassword;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
     }
 
-    // Delete message
-    @DeleteMapping("/{id}")
-    public String deleteContact(@PathVariable Long id) {
+    // ================= DTO FOR ADMIN USERS =================
+    public static class UserDTO {
 
-        userRepository.deleteById(id);
+        private Long id;
+        private String name;
+        private String email;
+        private String mobile;
+        private String role;
 
-        return "Contact message deleted successfully";
+        public UserDTO(Long id, String name, String email, String mobile, String role) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.mobile = mobile;
+            this.role = role;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public String getRole() {
+            return role;
+        }
     }
-
 }
