@@ -93,11 +93,11 @@ public class UserController {
         List<User> users = userRepository.findAll();
 
         return users.stream().map(user -> new UserDTO(
-            user.getId(),
-            user.getName(),
-            user.getEmail(),
-            user.getPhone(),
-            "User"
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),   // fetched from database
+                "User"
         )).toList();
     }
 
