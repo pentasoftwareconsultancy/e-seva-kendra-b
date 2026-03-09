@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.E_seva_kendra.service.service.ReportService;
+import com.example.E_seva_kendra.service.ReportService;
 
 @RestController
 @RequestMapping("/api/reports")

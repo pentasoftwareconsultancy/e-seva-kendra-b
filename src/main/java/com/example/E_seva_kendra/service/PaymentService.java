@@ -1,6 +1,7 @@
-package com.example.E_seva_kendra.service.service;
+package com.example.E_seva_kendra.service;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +16,7 @@ import com.example.E_seva_kendra.model.Order;
 import com.example.E_seva_kendra.model.Payment;
 import com.example.E_seva_kendra.repository.OrderRepository;
 import com.example.E_seva_kendra.repository.PaymentRepository;
+import com.example.E_seva_kendra.service.NotificationService;
 
 @Service
 public class PaymentService {
@@ -24,6 +26,9 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public String confirmPayment(String name,
                                  String mobile,
@@ -69,20 +74,31 @@ public class PaymentService {
 
             paymentRepository.save(payment);
 
+            // ===== CREATE NOTIFICATION =====
+            notificationService.createNotification(
+                    savedOrder.getId(),
+                    savedOrder.getId(),
+                    "Payment Successful",
+                    "Your payment for " + serviceName + " was successful. Your order has been placed.",
+                    "PAYMENT_SUCCESS"
+            );
+
             return "Order Placed Successfully";
 
         } catch (IOException e) {
             return "Payment Failed";
         }
     }
-    public List<Payment> getAllPayments(){
+
+    public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
-    public Double getTodayEarnings(){
+
+    public Double getTodayEarnings() {
 
         Double total = paymentRepository.getTodayEarnings();
 
-        if(total == null){
+        if (total == null) {
             return 0.0;
         }
 
