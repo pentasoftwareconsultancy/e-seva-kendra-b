@@ -23,6 +23,7 @@ public class OrderService {
 
         Order order = new Order();
 
+        order.setUserId(request.getUserId());
         order.setName(request.getName());
         order.setMobile(request.getMobile());
         order.setServiceName(request.getServiceName());
@@ -34,7 +35,7 @@ public class OrderService {
 
         // 🔔 Notification for new order
         notificationService.createNotification(
-                savedOrder.getId(),
+                savedOrder.getUserId(),
                 savedOrder.getId(),
                 "Order Created",
                 "Your order for " + savedOrder.getServiceName() + " has been created successfully.",
@@ -62,7 +63,7 @@ public class OrderService {
 
         // 🔔 Notification when admin updates order status
         notificationService.createNotification(
-                order.getId(),
+                order.getUserId(),
                 order.getId(),
                 "Order Status Updated",
                 "Your order status is now: " + status,
