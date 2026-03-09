@@ -1,4 +1,4 @@
-package com.example.E_seva_kendra.service.service;
+package com.example.E_seva_kendra.service;
 
 import java.util.*;
 

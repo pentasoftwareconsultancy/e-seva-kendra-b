@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.E_seva_kendra.dto.OrderRequest;
 import com.example.E_seva_kendra.dto.StatusRequest;
 import com.example.E_seva_kendra.model.Order;
-import com.example.E_seva_kendra.service.service.OrderService;
+import com.example.E_seva_kendra.service.OrderService;
 
 @RestController
 @RequestMapping("/api/orders")
