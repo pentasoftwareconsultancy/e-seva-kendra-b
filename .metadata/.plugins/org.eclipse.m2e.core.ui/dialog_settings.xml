@@ -2,7 +2,11 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+<<<<<<< HEAD
 			<item value="C:\E-seva\e-seva-kendra-b"/>
+=======
+			<item value="C:\Devcon\e-seva-kendra-b"/>
+>>>>>>> 50dd3addba8492228f66828f496e9821a076d990
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

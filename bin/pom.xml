@@ -41,6 +41,12 @@
         <version>42.6.0</version>
     </dependency>
 
+<!-- Spring Security for password encryption -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
     <!-- Optional: Spring Boot DevTools for hot reload -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
