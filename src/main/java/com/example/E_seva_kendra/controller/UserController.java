@@ -54,7 +54,7 @@ public class UserController {
             }
         }
 
-        return "Invalid Email or Password";
+        return "Register the account ";
     }
 
     // ================= UPDATE PROFILE =================
