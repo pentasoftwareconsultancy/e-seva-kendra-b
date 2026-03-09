@@ -30,7 +30,8 @@ public class PaymentService {
     @Autowired
     private NotificationService notificationService;
 
-    public String confirmPayment(String name,
+    public String confirmPayment(Long userId,
+                                 String name,
                                  String mobile,
                                  String serviceName,
                                  String extraData,
@@ -55,6 +56,7 @@ public class PaymentService {
 
             // ===== SAVE ORDER =====
             Order order = new Order();
+            order.setUserId(userId);
             order.setName(name);
             order.setMobile(mobile);
             order.setServiceName(serviceName);
@@ -76,7 +78,7 @@ public class PaymentService {
 
             // ===== CREATE NOTIFICATION =====
             notificationService.createNotification(
-                    savedOrder.getId(),
+                    savedOrder.getUserId(),
                     savedOrder.getId(),
                     "Payment Successful",
                     "Your payment for " + serviceName + " was successful. Your order has been placed.",

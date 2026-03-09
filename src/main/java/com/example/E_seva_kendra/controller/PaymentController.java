@@ -20,6 +20,7 @@ public class PaymentController {
     // Save Paymenta
     @PostMapping("/confirm")
     public String confirmPayment(
+            @RequestParam Long userId,
             @RequestParam String name,
             @RequestParam String mobile,
             @RequestParam String serviceName,
@@ -27,7 +28,7 @@ public class PaymentController {
             @RequestParam Double amount,
             @RequestParam("screenshot") MultipartFile screenshot){
 
-        return paymentService.confirmPayment(name, mobile, serviceName, extraData, amount, screenshot);
+        return paymentService.confirmPayment(userId, name, mobile, serviceName, extraData, amount, screenshot);
     }
 
     // Get All Payments (Admin Panel)

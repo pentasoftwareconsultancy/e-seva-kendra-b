@@ -26,6 +26,7 @@ public class Notification {
     private boolean isRead = false;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     // =====================
