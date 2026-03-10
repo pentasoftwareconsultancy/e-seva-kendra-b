@@ -36,6 +36,22 @@ public class NotificationController {
 
         return notificationRepository.save(notification);
     }
+    
+    //MARK ALL AS READ
+    @PatchMapping("/read-all/{userId}")
+    public String markAllAsRead(@PathVariable Long userId) {
+
+        List<Notification> notifications =
+                notificationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        for (Notification notification : notifications) {
+            notification.setRead(true);
+        }
+
+        notificationRepository.saveAll(notifications);
+
+        return "All notifications marked as read";
+    }
 
     // GET UNREAD COUNT
     @GetMapping("/unread-count/{userId}")
