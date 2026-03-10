@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.E_seva_kendra.model.Payment;
-import com.example.E_seva_kendra.service.service.PaymentService;
+import com.example.E_seva_kendra.service.PaymentService;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -17,9 +17,10 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    // Save Payment
+    // Save Paymenta
     @PostMapping("/confirm")
     public String confirmPayment(
+            @RequestParam Long userId,
             @RequestParam String name,
             @RequestParam String mobile,
             @RequestParam String serviceName,
@@ -27,7 +28,7 @@ public class PaymentController {
             @RequestParam Double amount,
             @RequestParam("screenshot") MultipartFile screenshot){
 
-        return paymentService.confirmPayment(name, mobile, serviceName, extraData, amount, screenshot);
+        return paymentService.confirmPayment(userId, name, mobile, serviceName, extraData, amount, screenshot);
     }
 
     // Get All Payments (Admin Panel)
