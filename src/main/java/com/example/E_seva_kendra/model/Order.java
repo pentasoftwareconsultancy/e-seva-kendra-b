@@ -71,7 +71,16 @@ public class Order {
 
 	private String name;
 
-    private String mobile;
+	private Long userId;
+    public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	private String mobile;
 
     private String serviceName;
 

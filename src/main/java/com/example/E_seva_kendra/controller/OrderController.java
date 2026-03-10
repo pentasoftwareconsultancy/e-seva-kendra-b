@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.E_seva_kendra.dto.OrderRequest;
 import com.example.E_seva_kendra.dto.StatusRequest;
 import com.example.E_seva_kendra.model.Order;
+import com.example.E_seva_kendra.repository.OrderRepository;
 import com.example.E_seva_kendra.service.service.OrderService;
 
 @RestController
@@ -17,6 +18,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     // Create Order
     @PostMapping
@@ -33,5 +36,11 @@ public class OrderController {
     @PutMapping("/{id}/status")
     public String updateStatus(@PathVariable Long id, @RequestBody StatusRequest request){
         return orderService.updateOrderStatus(id, request.getStatus());
+    }
+    
+    
+    @GetMapping("/user/{userId}")
+    public List<Order> getUserOrders(@PathVariable Long userId){
+    	return orderRepository.findByUserId(userId);
     }
 }

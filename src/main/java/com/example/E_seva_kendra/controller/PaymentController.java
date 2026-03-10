@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.E_seva_kendra.model.Payment;
+import com.example.E_seva_kendra.repository.PaymentRepository;
 import com.example.E_seva_kendra.service.service.PaymentService;
 
 @RestController
@@ -16,6 +17,10 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    
+    @Autowired
+    private PaymentRepository paymentRepository;
+
 
     // Save Payment
     @PostMapping("/confirm")
@@ -39,4 +44,11 @@ public class PaymentController {
     public Double getTodayEarnings(){
         return paymentService.getTodayEarnings();
     }
+    
+    @GetMapping("/user/{userId}")
+    public List<Payment> getUserPayments(@PathVariable Long userId) {
+
+        return paymentRepository.findByUserId(userId);
+    }
+
 }
