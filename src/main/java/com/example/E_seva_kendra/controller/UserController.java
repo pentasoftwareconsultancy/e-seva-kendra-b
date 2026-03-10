@@ -41,7 +41,7 @@ public class UserController {
 
     // ================= LOGIN =================
     @PostMapping("/login")
-    public String login(@RequestBody User user){
+    public LoginResponse login(@RequestBody User user){
 
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
 
@@ -50,11 +50,17 @@ public class UserController {
             User dbUser = existingUser.get();
 
             if(passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
-                return "Login Successful";
+
+                return new LoginResponse(
+                        "Login Successful",
+                        dbUser.getId(),
+                        dbUser.getEmail(),
+                        dbUser.getName()
+                );
             }
         }
 
-        return "Invalid Email or Password";
+        return new LoginResponse("Invalid Credentials", null, null, null);
     }
 
     // ================= UPDATE PROFILE =================
@@ -96,9 +102,41 @@ public class UserController {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPhone(),   // fetched from database
+                user.getPhone(),
                 "User"
         )).toList();
+    }
+
+    // ================= LOGIN RESPONSE DTO =================
+    public static class LoginResponse {
+
+        private String message;
+        private Long id;
+        private String email;
+        private String name;
+
+        public LoginResponse(String message, Long id, String email, String name) {
+            this.message = message;
+            this.id = id;
+            this.email = email;
+            this.name = name;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     // ================= DTO FOR UPDATE =================
