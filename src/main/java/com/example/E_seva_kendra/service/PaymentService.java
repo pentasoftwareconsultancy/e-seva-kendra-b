@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.E_seva_kendra.model.Document;
 import com.example.E_seva_kendra.model.Order;
 import com.example.E_seva_kendra.model.Payment;
+import com.example.E_seva_kendra.repository.DocumentRepository;
 import com.example.E_seva_kendra.repository.OrderRepository;
 import com.example.E_seva_kendra.repository.PaymentRepository;
 import com.example.E_seva_kendra.service.NotificationService;
@@ -25,72 +27,90 @@ public class PaymentService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private DocumentRepository documentRepository;
+    
+    @Autowired
     private PaymentRepository paymentRepository;
 
     @Autowired
     private NotificationService notificationService;
 
     public String confirmPayment(Long userId,
-                                 String name,
-                                 String mobile,
-                                 String serviceName,
-                                 String extraData,
-                                 Double amount,
-                                 MultipartFile screenshot) {
+            String name,
+            String mobile,
+            String serviceName,
+            String extraData,
+            Double amount,
+            MultipartFile screenshot,
+            MultipartFile[] documents) {
 
-        try {
+try {
 
-            // ===== Upload Folder =====
-            String uploadDir = "uploads/";
-            File folder = new File(uploadDir);
+String uploadDir = "uploads/";
+File folder = new File(uploadDir);
 
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
+if(!folder.exists()){
+folder.mkdirs();
+}
 
-            // ===== Save Screenshot =====
-            String fileName = screenshot.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir + fileName);
+// SAVE SCREENSHOT
 
-            Files.write(filePath, screenshot.getBytes());
+String screenshotName = screenshot.getOriginalFilename();
+Path screenshotPath = Paths.get(uploadDir + screenshotName);
+Files.write(screenshotPath, screenshot.getBytes());
 
-            // ===== SAVE ORDER =====
-            Order order = new Order();
-            order.setUserId(userId);
-            order.setName(name);
-            order.setMobile(mobile);
-            order.setServiceName(serviceName);
-            order.setExtraData(extraData);
-            order.setStatus("Order Placed");
+// SAVE ORDER
 
-            Order savedOrder = orderRepository.save(order);
+Order order = new Order();
+order.setUserId(userId);
+order.setName(name);
+order.setMobile(mobile);
+order.setServiceName(serviceName);
+order.setExtraData(extraData);
+order.setStatus("Pending");
 
-            // ===== SAVE PAYMENT =====
-            Payment payment = new Payment();
-            payment.setOrderId(savedOrder.getId());
-            payment.setName(name);
-            payment.setServiceName(serviceName);
-            payment.setAmount(amount);
-            payment.setScreenshot(fileName);
-            payment.setPaymentStatus("Success");
+Order savedOrder = orderRepository.save(order);
 
-            paymentRepository.save(payment);
+// SAVE PAYMENT
 
-            // ===== CREATE NOTIFICATION =====
-            notificationService.createNotification(
-                    savedOrder.getUserId(),
-                    savedOrder.getId(),
-                    "Payment Successful",
-                    "Your payment for " + serviceName + " was successful. Your order has been placed.",
-                    "PAYMENT_SUCCESS"
-            );
+Payment payment = new Payment();
+payment.setOrderId(savedOrder.getId());
+payment.setName(name);
+payment.setServiceName(serviceName);
+payment.setAmount(amount);
+payment.setScreenshot(screenshotName);
+payment.setPaymentStatus("Success");
 
-            return "Order Placed Successfully";
+paymentRepository.save(payment);
 
-        } catch (IOException e) {
-            return "Payment Failed";
-        }
-    }
+// SAVE DOCUMENTS
+
+for(MultipartFile file : documents){
+
+String fileName = file.getOriginalFilename();
+
+Path path = Paths.get(uploadDir + fileName);
+Files.write(path,file.getBytes());
+
+Document doc = new Document();
+
+doc.setOrderId(savedOrder.getId());
+doc.setDocumentType(fileName);
+doc.setFileName(fileName);
+
+documentRepository.save(doc);
+
+}
+
+return "Order Placed Successfully";
+
+} catch(Exception e){
+
+return "Payment Failed";
+
+}
+
+}
 
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
