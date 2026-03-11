@@ -53,6 +53,17 @@ public class PaymentRequest {
 		this.screenshot = screenshot;
 	}
 
+
+    public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+
+	private Long userId;
 	private String name;
 
     private String mobile;
