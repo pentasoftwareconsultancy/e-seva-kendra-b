@@ -88,4 +88,14 @@ public class Payment {
     private String paymentStatus;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+    
+    private Long userId;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 }
