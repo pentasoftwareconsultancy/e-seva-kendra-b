@@ -43,5 +43,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>{
     "GROUP BY month",
     nativeQuery = true)
     List<Object[]> getYearlyEarnings();
+    
+    List<Payment> findByUserId(Long userId);
 
 }
