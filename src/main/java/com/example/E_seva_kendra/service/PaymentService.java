@@ -136,6 +136,10 @@ return "Payment Failed";
 
         return total;
     }
+
+    public List<Payment> getPaymentsByUserId(Long userId) {
+        return paymentRepository.findByUserId(userId);
+    }
     
     
 }

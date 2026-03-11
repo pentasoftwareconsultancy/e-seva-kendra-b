@@ -10,7 +10,7 @@ import com.example.E_seva_kendra.repository.NotificationRepository;
 
 @RestController
 @RequestMapping("/notifications")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class NotificationController {
 
     @Autowired
