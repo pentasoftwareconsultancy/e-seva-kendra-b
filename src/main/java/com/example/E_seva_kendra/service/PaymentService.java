@@ -103,6 +103,15 @@ documentRepository.save(doc);
 
 }
 
+// CREATE NOTIFICATION
+notificationService.createNotification(
+    userId,
+    savedOrder.getId(),
+    "Payment Successful",
+    "Your payment for " + serviceName + " has been received successfully.",
+    "payment"
+);
+
 return "Order Placed Successfully";
 
 } catch(Exception e){
