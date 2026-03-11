@@ -88,4 +88,8 @@ public class OrderService {
     public long getCompletedOrders(){
         return orderRepository.countByStatus("Completed");
     }
+
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
 }

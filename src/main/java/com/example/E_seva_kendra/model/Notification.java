@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "notifications")
@@ -23,6 +24,7 @@ public class Notification {
 
     private String type;
 
+    @JsonProperty("read")
     private boolean isRead = false;
 
     @CreationTimestamp
