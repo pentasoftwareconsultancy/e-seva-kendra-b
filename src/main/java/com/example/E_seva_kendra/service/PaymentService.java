@@ -75,6 +75,7 @@ Order savedOrder = orderRepository.save(order);
 
 Payment payment = new Payment();
 payment.setOrderId(savedOrder.getId());
+payment.setUserId(userId);
 payment.setName(name);
 payment.setServiceName(serviceName);
 payment.setAmount(amount);
@@ -101,6 +102,15 @@ doc.setFileName(fileName);
 documentRepository.save(doc);
 
 }
+
+// CREATE NOTIFICATION
+notificationService.createNotification(
+    userId,
+    savedOrder.getId(),
+    "Payment Successful",
+    "Your payment for " + serviceName + " has been received successfully.",
+    "payment"
+);
 
 return "Order Placed Successfully";
 
