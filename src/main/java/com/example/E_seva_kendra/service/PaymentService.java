@@ -75,6 +75,7 @@ Order savedOrder = orderRepository.save(order);
 
 Payment payment = new Payment();
 payment.setOrderId(savedOrder.getId());
+payment.setUserId(userId);
 payment.setName(name);
 payment.setServiceName(serviceName);
 payment.setAmount(amount);
@@ -102,6 +103,15 @@ documentRepository.save(doc);
 
 }
 
+// CREATE NOTIFICATION
+notificationService.createNotification(
+    userId,
+    savedOrder.getId(),
+    "Payment Successful",
+    "Your payment for " + serviceName + " has been received successfully.",
+    "payment"
+);
+
 return "Order Placed Successfully";
 
 } catch(Exception e){
@@ -125,6 +135,10 @@ return "Payment Failed";
         }
 
         return total;
+    }
+
+    public List<Payment> getPaymentsByUserId(Long userId) {
+        return paymentRepository.findByUserId(userId);
     }
     
     

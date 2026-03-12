@@ -62,7 +62,6 @@ public class UserController {
  
         return new LoginResponse("Invalid Credentials", null, null, null);
     }
- 
     // ================= UPDATE PROFILE =================
     @PutMapping("/update-by-email")
     public String updateProfileByEmail(@RequestBody UserUpdateRequest request) {
@@ -91,7 +90,26 @@ public class UserController {
  
         return "Profile Updated Successfully";
     }
- 
+
+
+    // ================= GET USER BY ID =================
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // ================= GET USER STATS =================
+    @GetMapping("/{id}/stats")
+    public UserStatsDTO getUserStats(@PathVariable Long id) {
+        // This will be used for Account Overview
+        return new UserStatsDTO(
+                id,
+                userRepository.findById(id).map(User::getName).orElse("Unknown"),
+                userRepository.findById(id).map(User::getEmail).orElse("Unknown")
+        );
+    }
+
     // ================= GET ALL USERS (ADMIN) =================
     @GetMapping("/all")
     public List<UserDTO> getAllUsers() {
@@ -215,6 +233,31 @@ public class UserController {
  
         public String getRole() {
             return role;
+        }
+    }
+
+    // ================= DTO FOR USER STATS =================
+    public static class UserStatsDTO {
+        private Long id;
+        private String name;
+        private String email;
+
+        public UserStatsDTO(Long id, String name, String email) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
         }
     }
 }

@@ -56,4 +56,10 @@ public class PaymentController {
     public Double getTodayEarnings() {
         return paymentService.getTodayEarnings();
     }
+
+    // Get Payments by User ID
+    @GetMapping("/user/{userId}")
+    public List<Payment> getPaymentsByUserId(@PathVariable Long userId) {
+        return paymentService.getPaymentsByUserId(userId);
+    }
 }
